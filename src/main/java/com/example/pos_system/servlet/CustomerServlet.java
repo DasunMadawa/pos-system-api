@@ -20,7 +20,7 @@ public class CustomerServlet extends HttpServlet {
         System.out.println("get");
 
         // Set CORS headers
-//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:portNumber");
 //        resp.setHeader("Access-Control-Allow-Methods", "GET");
 //        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
