@@ -11,6 +11,6 @@
         <h3>Using Java EE and Hibernate</h3>
     </li>
     <li>
-        <h3>According to Layered Architecture</h3>
+        <h3>According to Layered Architecture </h3>
     </li>
 </ul>
