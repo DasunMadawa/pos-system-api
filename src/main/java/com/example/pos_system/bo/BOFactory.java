@@ -14,7 +14,7 @@ public class BOFactory {
     }
 
     public enum BOTypes {
-        CUSTOMER , ITEM , ORDER , HOME , ORDER_HISTORY
+        CUSTOMER , ITEM , ORDER , HOME
     }
 
     public SuperBO getBO(BOTypes boTypes) {
@@ -23,7 +23,6 @@ public class BOFactory {
             case ITEM: return new ItemBOImpl();
             case ORDER: return new OrderBOImpl();
             case HOME: return new HomeBOImpl();
-            case ORDER_HISTORY: return new OrderHisBOImpl();
             default: return null;
         }
 

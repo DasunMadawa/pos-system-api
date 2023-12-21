@@ -8,83 +8,52 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public boolean add(Customer customer) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.persist(customer);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+    public boolean add(Customer customer, Session session) throws Exception {
+        session.persist(customer);
+        return true;
 
     }
 
     @Override
-    public Customer search(String id) throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            return session.get(Customer.class, id);
-        } catch (Exception e) {
-            throw e;
-        }
+    public Customer search(String id, Session session) throws Exception {
+        Customer customer = session.get(Customer.class, id);
 
-    }
-
-    @Override
-    public boolean update(Customer customer) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.update(customer);
-            transaction.commit();
-
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
-
-    }
-
-    @Override
-    public boolean delete(String id) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            Customer customer = session.get(Customer.class, id);
-            session.delete(customer);
-            transaction.commit();
-
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
-
-    }
-
-    @Override
-    public List<Customer> getAll() throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            NativeQuery nativeQuery = session.createNativeQuery("SELECT * FROM customer");
+        if (customer == null) {
+            NativeQuery nativeQuery = session.createNativeQuery("SELECT * FROM customer WHERE cName = ?1");
             nativeQuery.addEntity(Customer.class);
+            nativeQuery.setParameter(1, id);
 
-            return nativeQuery.list();
-        } catch (Exception e) {
-            throw e;
+            customer = (Customer) nativeQuery.uniqueResult();
         }
+
+        return customer;
+
+    }
+
+    @Override
+    public boolean update(Customer customer, Session session) throws Exception {
+        session.update(customer);
+        return true;
+
+    }
+
+    @Override
+    public boolean delete(String id, Session session) throws Exception {
+        Customer customer = session.get(Customer.class, id);
+        session.delete(customer);
+        return true;
+
+    }
+
+    @Override
+    public List<Customer> getAll(Session session) throws Exception {
+        NativeQuery nativeQuery = session.createNativeQuery("SELECT * FROM customer");
+        nativeQuery.addEntity(Customer.class);
+
+        return nativeQuery.list();
 
     }
 

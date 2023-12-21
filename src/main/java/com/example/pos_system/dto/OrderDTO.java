@@ -90,4 +90,8 @@ public class OrderDTO {
         this.itemDTOList = itemDTOList;
     }
 
+    @Override
+    public String toString() {
+        return oId+" "+oDate+" "+oTotal+" "+oSubTotal+" "+oDiscount+" "+oBalance+" "+customerDTO+" "+itemDTOList;
+    }
 }

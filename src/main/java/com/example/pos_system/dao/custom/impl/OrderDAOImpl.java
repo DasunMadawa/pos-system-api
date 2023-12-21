@@ -1,87 +1,52 @@
 package com.example.pos_system.dao.custom.impl;
 
 import com.example.pos_system.dao.custom.OrderDAO;
+import com.example.pos_system.dto.CustomerDTO;
+import com.example.pos_system.dto.ItemDTO;
+import com.example.pos_system.entity.Customer;
+import com.example.pos_system.entity.Item;
 import com.example.pos_system.entity.Order_t;
-import com.example.pos_system.util.FactoryConfiguration;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
 import java.util.List;
 
 public class OrderDAOImpl implements OrderDAO {
     @Override
-    public boolean add(Order_t order) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.persist(order);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+    public boolean add(Order_t order, Session session) throws Exception {
+        session.persist(order);
+        return true;
 
     }
 
     @Override
-    public Order_t search(String id) throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-
-            return session.get(Order_t.class, id);
-        } catch (Exception e) {
-            throw e;
-        }
+    public Order_t search(String id, Session session) throws Exception {
+        return session.get(Order_t.class, id);
 
     }
 
     @Override
-    public boolean update(Order_t order) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.update(order);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+    public boolean update(Order_t order, Session session) throws Exception {
+        session.update(order);
+        return true;
 
     }
 
     @Override
-    public boolean delete(String id) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            Order_t order = session.get(Order_t.class, id);
-            session.delete(order);
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+    public boolean delete(String id, Session session) throws Exception {
+        Order_t order = session.get(Order_t.class, id);
+        session.delete(order);
+        return true;
 
     }
 
     @Override
-    public List<Order_t> getAll() throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            NativeQuery nativeQuery = session.createNativeQuery("SELECT * FROM order_t");
-            nativeQuery.addEntity(Order_t.class);
+    public List<Order_t> getAll(Session session) throws Exception {
+        NativeQuery nativeQuery = session.createNativeQuery("SELECT * FROM order_t");
+        nativeQuery.addEntity(Order_t.class);
 
-            return nativeQuery.list();
-        } catch (Exception e) {
-            throw e;
-        }
+        return nativeQuery.list();
+
     }
 
 }

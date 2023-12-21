@@ -11,78 +11,49 @@ import java.util.List;
 
 public class ItemDAOImpl implements ItemDAO {
     @Override
-    public boolean add(Item item) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.persist(item);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+    public boolean add(Item item, Session session) throws Exception {
+        session.persist(item);
+        return true;
 
     }
 
     @Override
-    public Item search(String id) throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            return session.get(Item.class, id);
-        } catch (Exception e) {
-            throw e;
-        }
+    public Item search(String id, Session session) throws Exception {
+        Item item = session.get(Item.class, id);
 
-    }
-
-    @Override
-    public boolean update(Item item) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            session.update(item);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
-
-    }
-
-    @Override
-    public boolean delete(String id) throws Exception {
-        Transaction transaction = null;
-
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            transaction = session.beginTransaction();
-
-            Item item = session.get(Item.class, id);
-            session.delete(item);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
-
-    }
-
-    @Override
-    public List<Item> getAll() throws Exception {
-        try (Session session = FactoryConfiguration.getInstance().getSession()) {
-            NativeQuery nativeQuery = session.createNativeQuery("SELECT  * FROM item");
+        if (item == null) {
+            NativeQuery nativeQuery = session.createNativeQuery("SELECT * From item WHERE iName = ?1");
             nativeQuery.addEntity(Item.class);
+            nativeQuery.setParameter(1, id);
 
-            return nativeQuery.list();
-        } catch (Exception e) {
-            throw e;
+            item = (Item) nativeQuery.uniqueResult();
+
         }
 
+        return item;
+
+    }
+
+    @Override
+    public boolean update(Item item, Session session) throws Exception {
+        session.update(item);
+        return true;
+    }
+
+    @Override
+    public boolean delete(String id, Session session) throws Exception {
+        Item item = session.get(Item.class, id);
+        session.delete(item);
+        return true;
+
+    }
+
+    @Override
+    public List<Item> getAll(Session session) throws Exception {
+        NativeQuery nativeQuery = session.createNativeQuery("SELECT  * FROM item");
+        nativeQuery.addEntity(Item.class);
+
+        return nativeQuery.list();
     }
 
 }

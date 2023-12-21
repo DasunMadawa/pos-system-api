@@ -4,4 +4,5 @@ import com.example.pos_system.dao.CrudDAO;
 import com.example.pos_system.entity.Customer;
 
 public interface CustomerDAO extends CrudDAO<Customer> {
+
 }
