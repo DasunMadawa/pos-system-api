@@ -6,7 +6,6 @@ import com.example.pos_system.dao.custom.CustomerDAO;
 import com.example.pos_system.dto.CustomerDTO;
 import com.example.pos_system.entity.Customer;
 import com.example.pos_system.util.FactoryConfiguration;
-import com.mysql.cj.xdevapi.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

@@ -29,9 +29,7 @@ public class OrderBOImpl implements OrderBO {
         try (Session session = FactoryConfiguration.getInstance().getSession()) {
             transaction = session.beginTransaction();
 
-            int i = 0;
             for (ItemDTO itemDTO : orderDTO.getItemDTOList()) {
-                System.out.println(i++);
                 Item tempItem = itemDAO.search(itemDTO.getiCode(), session);
 
                 int newQty = tempItem.getiQty() - itemDTO.getiQty();

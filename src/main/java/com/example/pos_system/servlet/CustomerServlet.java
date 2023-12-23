@@ -24,23 +24,23 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // Set CORS headers for preflight requests
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:port_number");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        resp.setHeader("Access-Control-Max-Age", "3600");
-
-        // Set other headers as needed for your application
-
-        // Return a successful response for the preflight request
-        resp.setStatus(HttpServletResponse.SC_OK);
+//        // Set CORS headers for preflight requests
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
+//        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//        resp.setHeader("Access-Control-Max-Age", "3600");
+//
+//        // Set other headers as needed for your application
+//
+//        // Return a successful response for the preflight request
+//        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("post");
 
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:port_number");
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
 
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
             resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
@@ -62,10 +62,11 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("get");
 
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:port_number");
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
 
         String cId = req.getParameter("cId");
         Jsonb jsonb = JsonbBuilder.create();
+        resp.setContentType("application/json");
 
         if (cId != null) {
             try {
@@ -73,7 +74,7 @@ public class CustomerServlet extends HttpServlet {
 
                 String jsonData = jsonb.toJson(customerDTO);
 
-                resp.getWriter().print(jsonData);
+                resp.getWriter().write(jsonData);
 
             } catch (Exception e) {
                 resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
@@ -86,7 +87,7 @@ public class CustomerServlet extends HttpServlet {
 
                 String jsonData = jsonb.toJson(allCustomers);
 
-                resp.getWriter().println(jsonData);
+                resp.getWriter().write(jsonData);
 
             } catch (Exception e) {
                 resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
@@ -100,7 +101,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("put");
 
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:port_number");
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
 
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
             resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
@@ -123,7 +124,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("delete");
 
-        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:port_number");
+//        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
 
         String cId = req.getParameter("cId");
 

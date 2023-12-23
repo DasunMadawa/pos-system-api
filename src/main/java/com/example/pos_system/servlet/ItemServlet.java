@@ -45,13 +45,15 @@ public class ItemServlet extends HttpServlet {
         String iCode = req.getParameter("iCode");
         Jsonb jsonb = JsonbBuilder.create();
 
+        resp.setContentType("application/json");
+
         if (iCode != null) {
             try {
                 ItemDTO itemDTO = itemBO.searchItem(iCode);
 
                 String jsonData = jsonb.toJson(itemDTO);
 
-                resp.getWriter().println(jsonData);
+                resp.getWriter().write(jsonData);
             } catch (Exception e) {
                 resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
                 e.printStackTrace();
@@ -62,7 +64,7 @@ public class ItemServlet extends HttpServlet {
 
                 String jsonData = jsonb.toJson(allItems);
 
-                resp.getWriter().println(jsonData);
+                resp.getWriter().write(jsonData);
             } catch (Exception e) {
                 resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
                 e.printStackTrace();
